@@ -38,8 +38,8 @@ class CookieParser(object):
                 secure = True
             if 'expires' == name:
                 expires_on = time.strptime(value, '%a, %d-%b-%Y %H:%M:%S %Z')       
-            # TODO potentially these could be sanity checked against request URL
-            # as per spec, but we probably can trust YABI
+            # TODO these could be sanity checked against request URL
+            # as per spec
             if 'domain' == name:
                 domain = value
                 if not domain.startswith('.'):
