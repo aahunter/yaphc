@@ -157,6 +157,8 @@ class FileCookiePersister(object):
 
 class Cookie(object):
     def __init__(self, name, value, domain, path, expires_on=None, secure=False):
+        if type(secure) is not bool:
+            raise ValueError("Passed in argument 'secure' must be boolean type")
         self.name, self.value = name, value
         self.domain = domain
         self.path = path
@@ -168,6 +170,7 @@ class Cookie(object):
         # TODO clean this up
         args = s.split(';')
         args[4] = time.gmtime(float(args[4]))
+        args[5] = args[5]=="True" or args[5]=="true"
         return Cookie(*args)
 
     @property
