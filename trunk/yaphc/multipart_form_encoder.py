@@ -74,11 +74,11 @@ class FilelikeBody(object):
         if item_idx == -1:
             self.close()
             return ''
-        result = self.read_from_item(item_idx, rel_pos, size)
+        result = str(self.read_from_item(item_idx, rel_pos, size))
         while len(result) < size and item_idx+1 < len(self.data):
             item_idx += 1
             rel_pos = 0
-            result += self.read_from_item(item_idx, rel_pos, size)
+            result += str(self.read_from_item(item_idx, rel_pos, size))
         self.index += len(result)
         return result 
 
