@@ -27,8 +27,8 @@ class Request(object):
         return self._body
 
 class GetRequest(Request):
-    def __init__(self, url, params=None):
-        Request.__init__(self, 'GET', url, params)
+    def __init__(self, url, params=None, headers=None):
+        Request.__init__(self, 'GET', url, params, headers)
 
     @property
     def url(self):
