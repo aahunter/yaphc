@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import urlparse
 import httplib2
 from cookies import CookieJar, FileCookiePersister
@@ -7,6 +8,9 @@ from request import GetRequest, PostRequest
 #httplib2.debuglevel = 1
 
 class UnauthorizedError(StandardError):
+    pass
+
+class ConnectionError(StandardError):
     pass
 
 DEFAULT_WORKDIR = '.httplib2_workdir'
@@ -52,7 +56,15 @@ class Http(object):
             req_url = self.base_url + req_url
         request.add_headers(self.cookie_jar.cookies_to_send_header(req_url))
 
-        resp, content = self.h.request(req_url, request.method, body=request.body, headers=request.headers)
+        try:
+            resp, content = self.h.request(req_url, request.method, body=request.body, headers=request.headers)
+        except AttributeError, ae:
+            # http://code.google.com/p/httplib2/issues/detail?id=96
+            # check that this says "'NoneType' object has no attribute 'makefile'"
+            if "'NoneType' object has no attribute 'makefile'" in str(ae):
+                raise ConnectionError("Cannot connect to %s"%self.base_url)
+            
+            raise
 
         # TODO more error handling required here
 
