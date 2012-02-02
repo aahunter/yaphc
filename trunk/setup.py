@@ -4,7 +4,7 @@ import setuptools
 from distutils.core import setup
 
 setup(name='yaphc',
-      version='0.1.3',
+      version='0.1.4',
       description='Yet Another Python Http Client',
       author='Tamas Szabo',
       author_email='szabtam AT google\'s mail service',
