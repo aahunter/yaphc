@@ -16,13 +16,19 @@ class ConnectionError(StandardError):
 DEFAULT_WORKDIR = '.httplib2_workdir'
 
 class Http(object):
-    def __init__(self, workdir=DEFAULT_WORKDIR, base_url='', cache=True, cookie_persister=None):
+    def __init__(self, workdir=DEFAULT_WORKDIR, base_url='', cache=True, cookie_persister=None, disable_ssl_certificate_validation=True):
         self.workdir = workdir
         if cache:
             cache_dir = self.setup_cachedir()
-            self.h = httplib2.Http(cache_dir)
+            if disable_ssl_certificate_validation:
+                self.h = httplib2.Http(cache_dir, disable_ssl_certificate_validation=True)
+            else:
+                self.h = httplib2.Http(cache_dir)
         else:
-            self.h = httplib2.Http()
+            if disable_ssl_certificate_validation:
+                self.h = httplib2.Http(disable_ssl_certificate_validation=True)
+            else:
+                self.h = httplib2.Http()
 
         if cookie_persister is None:
             jar_file = os.path.join(self.workdir, 'cookies.txt')
